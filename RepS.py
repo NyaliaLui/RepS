@@ -7,6 +7,7 @@ import sys
 from os import listdir, chdir, mkdir
 from os.path import isfile, isdir, join
 from shutil import copy as cp
+import argparse
 
 #create necessary subfolders from path
 def create_folders(folder_path):
@@ -60,22 +61,15 @@ def search(start_path, inter_path, player_name):
             cp(src_file, dst_dir)
             print('create--> ', inter_path+'\\'+files[i])
 
-#if len(sys.argv) != 3:
-#    print('invalid args')
-#    print('python RepS.py <player name> <destination folder>')
-#    sys.exit(1)
+parser = argparse.ArgumentParser(description='A python script that searches a folder and its sub-folders for SC2 replays and then sorts them!')
+parser.add_argument('folder', type=str, help='path to folder of replays')
+parser.add_argument('-s', '--sort', type=str, choices=['p','m'], required=True, help='sort replays by player name (p) or by matchup (m)')
 
-player_name = 'ShoWTimE'
-start_path = 'C:\\Users\\Nyalia Lui\\Documents\\StarCraft II\\Accounts\\75195470\\1-S2-1-2948360\\Replays\\Multiplayer\\2018 WCS Montreal'
-inter_path = ''
-desti_path = 'C:\\Users\\Nyalia Lui\\Documents\\StarCraft II\\Accounts\\75195470\\1-S2-1-2948360\\Replays\\Multiplayer\\2018-WCS-Montreal-Analysis'
-dirs_to_move = []
+args = parser.parse_args()
+if args.sort is 'p':
+    print("sort by player enabled")
 
-search(start_path, inter_path, 'ShoWTimE')
+if args.sort is 'm':
+    print("sort by matchup enabled")
 
-# files = [f for f in listdir(start_path) if isfile(join(start_path, f))]
-# dirs = [d for d in listdir(start_path) if isdir(join(start_path, f))]
-
-# print(files)
-# print('')
-# print(dirs)
+print(args.folder)

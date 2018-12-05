@@ -3,6 +3,7 @@ A python script that searches a folder and its sub-folders for SC2 replays and t
 RepS can sort by player name or by match up.
 
 # Installation steps
+* Must have [Python3](https://www.python.org/downloads/) installed on your system. Download Python3 [here](https://www.python.org/downloads/)
 * Download via git or click green download button to get as .zip file
 * extract the contents to anywhere on your machine
 * __Success!__ You have downloaded and installed RepS!
