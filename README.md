@@ -1,5 +1,5 @@
 # RepS
-A python script that sorts a folder and its sub-folders for SC2 replays.
+A python script that searches a folder and its sub-folders for SC2 replays and then sorts them!
 RepS can sort by player name or by match up.
 
 # Installation steps
