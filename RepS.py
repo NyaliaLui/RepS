@@ -8,6 +8,8 @@ from os import listdir, chdir, mkdir
 from os.path import isfile, isdir, join
 from shutil import copy as cp
 import argparse
+from s2protocol import versions
+import mpyq
 
 #create necessary subfolders from path
 def create_folders(folder_path):
@@ -61,6 +63,52 @@ def search(start_path, inter_path, player_name):
             cp(src_file, dst_dir)
             print('create--> ', inter_path+'\\'+files[i])
 
+#process_replay - processes a SC2 replay and returns replay archive
+def process_replay(replay):
+    return mpyq.MPQArchive(replay)
+
+#get_details - returns the SC2 details listing of a SC2 replay archive
+#part of this code was modified from 
+#s2_cli.py @ https://github.com/Blizzard/s2protocol/tree/master/s2protocol
+def get_details(archive):
+    contents = archive.header['user_data_header']['content']
+    header = versions.latest().decode_replay_header(contents)
+
+    # The header's baseBuild determines which protocol to use
+    baseBuild = header['m_version']['m_baseBuild']
+    try:
+        protocol = versions.build(baseBuild)
+    except Exception, e:
+        print >> sys.stderr, 'Unsupported base build: {0} ({1})'.format(baseBuild, str(e))
+        sys.exit(1)
+
+    contents = archive.read_file('replay.details')
+    details = protocol.decode_replay_details(contents)
+
+    return details
+
+#beautify_name - strips names of CSS/HTML intended characters
+#returns the clan tag and player name in an easier to read format
+def beautify_name(name):
+    infos = name.split('<sp/>')
+    infos[0] = infos[0].replace('&lt;', '')
+    infos[0] = infos[0].replace('&gt;', '')
+
+    info = '[' + infos[0] + '] ' + infos[1]
+
+    return info
+
+#player_names - returns a list with the names of all
+#the players in the SC2 game lobby
+def player_names(details):
+    names = []
+
+    for i in range(len(details['m_playerList'])):
+        info = beautify_name(details['m_playerList'][i]['m_name'])
+        names.append(info)
+
+    return names
+
 parser = argparse.ArgumentParser(description='A python script that searches a folder and its sub-folders for SC2 replays and then sorts them!')
 parser.add_argument('folder', type=str, help='path to folder of replays')
 parser.add_argument('-s', '--sort', type=str, choices=['p','m'], required=True, help='sort replays by player name (p) or by matchup (m)')
@@ -73,3 +121,13 @@ if args.sort is 'm':
     print("sort by matchup enabled")
 
 print(args.folder)
+
+try:
+    archive = process_replay('sample.SC2Replay')
+    details = get_details(archive)
+    names = player_names(details)
+
+    print(names)
+except Exception, e:
+    print('something went wrong.\n', str(e))
+    sys.exit(1)
