@@ -19,4 +19,5 @@ RepS can sort by player name or by match up.
 # FAQ
 1. RepS will create the folders in the given directory and will not modify or move the original copies.
 2. sort by **player name** will result in the same replay appearing in both player's folders.
-2. sort by **player name** is case sensitive, so a player name __NoticALs__ and __noticals__ will have their own folders of replays
+3. sort by **player name** is case sensitive, so a player name __NoticALs__ and __noticals__ will have their own folders of replays.
+4. sort by **matchup up** currently does not work for team game replays such as 2v2 or 3v3.
