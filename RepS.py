@@ -5,9 +5,8 @@
 
 import sys
 import argparse
-
-from reps.inspector import NameInspector, MatchupInspector
-from reps import Replay, FolderProcessor
+from os import getcwd
+from reps import FolderProcessor
 
 parser = argparse.ArgumentParser(description='A python script that searches a folder and its sub-folders for SC2 replays and then sorts them!')
 parser.add_argument('folder', type=str, help='path to folder of replays')
@@ -20,11 +19,11 @@ if args.sort is 'p':
 if args.sort is 'm':
     print("sort by matchup enabled")
 
-replay = Replay(args.folder)
-mis = MatchupInspector()
-nis = NameInspector()
-print(mis.inspect(replay))
-print(nis.inspect(replay))
+fp = FolderProcessor()
+fp.organize_replays(args.folder, args.sort)
 
-# fp = FolderProcessor()
-# fp.organize_replays(args.folder, args.sort)
+fs = fp.folders()
+
+for mu in fs:
+    print(mu, fs[mu])
+    print('\n')

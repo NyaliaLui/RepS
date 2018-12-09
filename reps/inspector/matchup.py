@@ -8,4 +8,4 @@ class MatchupInspector:
     #inspect - return the matchup seen in 
     #in this replay
     def inspect(self, replay):
-        return replay.matchup
+        return [replay.matchup]

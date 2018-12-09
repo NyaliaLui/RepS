@@ -1,6 +1,13 @@
 from s2protocol import versions
 import mpyq
 import sys
+from os.path import isfile
+
+#is_replay - returns true if file is a replay
+def is_replay(replay_file):
+    ret = (isfile(replay_file) and ('.SC2Replay' in replay_file[-10:]))
+    return ret
+
 
 #Replay - a wrapper around S2 protocol replay files
 class Replay:
@@ -27,6 +34,7 @@ class Replay:
         self.matchup = ''
 
         #generate MPQ archive
+        print(replay_file)
         self.archive = mpyq.MPQArchive(replay_file)
         
         #get the replays protocol version
@@ -67,7 +75,7 @@ class Replay:
 
         #only strip if they have a clan tag
         # the '<' or '>' signs are how we tell clan tag (&lt or &gt)
-        if name.find('&lt;') > 0:
+        if name.find('&lt;') > -1:
             infos = name.split('<sp/>')
             infos[0] = infos[0].replace('&lt;', '')
             infos[0] = infos[0].replace('&gt;', '')
