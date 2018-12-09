@@ -13,7 +13,7 @@ class FolderProcessor:
         self._folders = {'reps': 'RepS'}
 
     #create necessary subfolders from path
-    def create_folders(self, folder_path):
+    def __create_folders(self, folder_path):
         all_folders = folder_path.split('\\')
 
         for folder in all_folders:
@@ -25,8 +25,9 @@ class FolderProcessor:
             chdir(folder)
 
 
-    #this search is looking at the directory names
-    def DepthFirstSearch(start_path, inter_path, player_name):
+    #organize_replays - conduct a depth first search on the given replay folder
+    #and organize the replays.
+    def organize_replays(self, start_path, inter_path, player_name):
         current_path = join(start_path, inter_path)
         dirs_and_files = listdir(current_path)
         dirs = []

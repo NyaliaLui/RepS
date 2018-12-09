@@ -16,17 +16,15 @@ parser.add_argument('-s', '--sort', type=str, choices=['p','m'], required=True, 
 args = parser.parse_args()
 if args.sort is 'p':
     print("sort by player name enabled")
-    nis = NameInspector()
-    nis.inspect('replay')
 
 if args.sort is 'm':
     print("sort by matchup enabled")
-    mis = MatchupInspector()
-    mis.inspect('replay')
 
-print(args.folder)
+replay = Replay(args.folder)
+mis = MatchupInspector()
+nis = NameInspector()
+print(mis.inspect(replay))
+print(nis.inspect(replay))
 
-replay = Replay('sample.SC2Replay')
-print(replay.names)
-
-fp = FolderProcessor()
+# fp = FolderProcessor()
+# fp.organize_replays(args.folder, args.sort)
