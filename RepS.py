@@ -21,9 +21,3 @@ if args.sort is 'm':
 
 fp = FolderProcessor()
 fp.organize_replays(args.folder, args.sort)
-
-fs = fp.folders()
-
-for mu in fs:
-    print(mu, fs[mu])
-    print('\n')

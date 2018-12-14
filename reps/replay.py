@@ -4,8 +4,8 @@ import sys
 from os.path import isfile
 
 #is_replay - returns true if file is a replay
-def is_replay(replay_file):
-    ret = (isfile(replay_file) and ('.SC2Replay' in replay_file[-10:]))
+def is_replay(replay_path):
+    ret = (isfile(replay_path) and ('.SC2Replay' in replay_path[-10:]))
     return ret
 
 
@@ -28,14 +28,15 @@ class Replay:
     header = None
     protocol = None
     details = None
+    local_path = ''
 
-    def __init__(self, replay_file):
+    def __init__(self, replay_path):
         self.names = []
         self.matchup = ''
+        self.local_path = replay_path
 
         #generate MPQ archive
-        print(replay_file)
-        self.archive = mpyq.MPQArchive(replay_file)
+        self.archive = mpyq.MPQArchive(replay_path)
         
         #get the replays protocol version
         contents = self.archive.header['user_data_header']['content']

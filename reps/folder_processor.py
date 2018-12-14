@@ -1,4 +1,4 @@
-from os import listdir, chdir, mkdir
+from os import listdir, chdir, mkdir, rename
 from os.path import isdir, join
 from shutil import copy as cp
 from reps.inspector import NameInspector, MatchupInspector
@@ -16,17 +16,37 @@ class FolderProcessor:
         self.__folders = {}
         self.__inspector = None
 
-    #create necessary subfolders from path
+    #create_folders - creates necessary subfolders from the hash of replays
+    #where each key is the folder name. Then, it copies all replays into 
+    #the appropriate locations
     def __create_folders(self):
-        all_folders = folder_path.split('\\')
 
-        for folder in all_folders:
+        parent_folder = 'Replays'
+        #create parent directory is called "RepS"
+        try:
+            mkdir(parent_folder)
+        except OSError:
+            pass
+
+        #for each key of hash, create the folder name
+        #and copy the necessary replays into it
+        for key in self.__folders:
+            folder = join(parent_folder, key)
             try:
                 mkdir(folder)
-            except FileExistsError:
+            except OSError:
                 pass
 
-            chdir(folder)
+            #copy replays into new folder
+            for replay in self.__folders[key]:
+                cp(replay.local_path, folder)
+
+                #give the replays a more descriptive name
+                old_name = join(folder, replay.local_path.split('\\')[-1])
+                temp = replay.names[0] + ' vs. ' + replay.names[1] + '.SC2Replay'
+                new_name = join(folder, temp)
+                rename(old_name, new_name)
+    
 
 
     #depth_first_search - recurssively search the folder structure for all replays
@@ -52,8 +72,9 @@ class FolderProcessor:
             self.__depth_first_search(start_path, inter)
 
 
-        #finished recursive steps, now we read replays found
+        
         key = ''
+        #finished recursive steps, now we read the discovered replays
         for i in range(len(files)):
 
             src_file = join(start_path, inter_path, files[i])
@@ -66,10 +87,10 @@ class FolderProcessor:
 
                 #place replays in proper folders
                 if key in self.__folders.keys():
-                    self.__folders[key].append(replay.names)
+                    self.__folders[key].append(replay)
                 else:
                     self.__folders[key] = []
-                    self.__folders[key].append(replay.names)
+                    self.__folders[key].append(replay)
 
 
 
@@ -87,8 +108,4 @@ class FolderProcessor:
         self.__depth_first_search(folder_path, '')
 
         #create the necessary subfolders
-        # self.__create_folders()
-
-    def folders(self):
-        return self.__folders
-        
+        self.__create_folders()        
