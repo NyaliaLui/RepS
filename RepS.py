@@ -5,7 +5,6 @@
 
 import sys
 import argparse
-from os import getcwd
 from reps import FolderProcessor
 
 parser = argparse.ArgumentParser(description='A python script that searches a folder and its sub-folders for SC2 replays and then sorts them!')

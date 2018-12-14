@@ -2,18 +2,16 @@ from os import listdir, chdir, mkdir, rename
 from os.path import isdir, join
 from shutil import copy as cp
 from reps.inspector import NameInspector, MatchupInspector
-from replay import Replay, is_replay
+from replay import Replay, is_replay, copy_replay
 
 #FolderProcessor - a singleton which
 #traverses a directory tree, organizes the replays using inspectors,
 #and creates the proper subfolders
 class FolderProcessor:
 
-    __folders = {}
-    __inspector = None
-
     def __init__(self):
         self.__folders = {}
+        self.__same_match = {}
         self.__inspector = None
 
     #create_folders - creates necessary subfolders from the hash of replays
@@ -43,11 +41,17 @@ class FolderProcessor:
 
                 #give the replays a more descriptive name
                 old_name = join(folder, replay.local_path.split('\\')[-1])
-                temp = replay.names[0] + ' vs. ' + replay.names[1] + '.SC2Replay'
-                new_name = join(folder, temp)
-                rename(old_name, new_name)
-    
 
+                #only assign numbers if there are more than one copy of replays
+                #with the same players in a 1v1 match
+                if replay.folder_flag > -1:
+                    temp = replay.replay_name.split('.')[0]
+                    temp = temp + (' (%d)' % (replay.folder_flag+1)) + '.SC2Replay'
+                    replay.replay_name = temp
+
+                new_name = join(folder, replay.replay_name)
+                rename(old_name, new_name)
+                
 
     #depth_first_search - recurssively search the folder structure for all replays
     #call the inspector to form and add to necessary buckets after reading a replay
@@ -78,19 +82,39 @@ class FolderProcessor:
         for i in range(len(files)):
 
             src_file = join(start_path, inter_path, files[i])
-            replay = Replay(src_file)
-            keys = self.__inspector.inspect(replay)
+            original = Replay(src_file)
+            keys = self.__inspector.inspect(original)
             
             #go through each key
             for j in range(len(keys)):
+                replay = copy_replay(original)
                 key = keys[j]
 
                 #place replays in proper folders
                 if key in self.__folders.keys():
+
+                    count = self.__same_match[key].count(replay.replay_name)
+                    if count > 0:
+                        replay.folder_flag = count
+                        
+
+                    #if folder flag is 1, then this is the first duplicate replay_name
+                    #and we need to make the first replay flag as 0
+                    if replay.folder_flag == 1:
+                        i = self.__same_match[key].index(replay.replay_name)
+                        self.__folders[key][i].folder_flag = 0
+
                     self.__folders[key].append(replay)
+                    self.__same_match[key].append(replay.replay_name)
+
                 else:
                     self.__folders[key] = []
+                    self.__same_match[key] = []
+
+                    #folder flag -1 means there are no replay with the same player names, yet ...
+                    replay.folder_flag = -1
                     self.__folders[key].append(replay)
+                    self.__same_match[key].append(replay.replay_name)
 
 
 

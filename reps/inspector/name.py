@@ -9,4 +9,8 @@ class NameInspector:
     #inspect - return the list of names
     #seen in this replay
     def inspect(self, replay):
-        return replay.names
+        names = []
+        for player in replay.players:
+            names.append(player['clan_tag'] + ' ' + player['name'])
+
+        return names
