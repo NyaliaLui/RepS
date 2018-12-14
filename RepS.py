@@ -10,6 +10,7 @@ from reps import FolderProcessor
 parser = argparse.ArgumentParser(description='A python script that searches a folder and its sub-folders for SC2 replays and then sorts them!')
 parser.add_argument('folder', type=str, help='path to folder of replays')
 parser.add_argument('-s', '--sort', type=str, choices=['p','m'], required=True, help='sort replays by player name (p) or by matchup (m)')
+parser.add_argument('-t', '--target', type=str, help='target folder for the replays')
 
 args = parser.parse_args()
 if args.sort is 'p':
@@ -18,5 +19,8 @@ if args.sort is 'p':
 if args.sort is 'm':
     print("sort by matchup enabled")
 
-fp = FolderProcessor()
-fp.organize_replays(args.folder, args.sort)
+try:
+    fp = (FolderProcessor(args.target) if args.target else FolderProcessor())
+    fp.organize_replays(args.folder, args.sort)
+except:
+    print('something went wrong')

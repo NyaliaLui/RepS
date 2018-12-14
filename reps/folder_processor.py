@@ -9,17 +9,18 @@ from replay import Replay, is_replay, copy_replay
 #and creates the proper subfolders
 class FolderProcessor:
 
-    def __init__(self):
+    def __init__(self, dest=''):
         self.__folders = {}
         self.__same_match = {}
         self.__inspector = None
+        self.__dest_folder = dest
 
     #create_folders - creates necessary subfolders from the hash of replays
     #where each key is the folder name. Then, it copies all replays into 
     #the appropriate locations
     def __create_folders(self):
 
-        parent_folder = 'Replays'
+        parent_folder = join(self.__dest_folder, 'Replays')
         #create parent directory is called "RepS"
         try:
             mkdir(parent_folder)
