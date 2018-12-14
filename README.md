@@ -15,6 +15,8 @@ RepS can sort by player name or by match up.
     - `--sort m` means sort the replays by match up
 2. The sorted replays will be in **folder/RepS**
 
+# Known Bugs/Issues
+1. Replays that are not from the latest SC2 patch tend to have issues with [S2 Protocol](https://github.com/Blizzard/s2protocol). We are working on a solution to this.
 
 # FAQ
 1. RepS will create the folders in the given directory and will not modify or move the original copies.
