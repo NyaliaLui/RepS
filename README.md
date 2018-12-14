@@ -15,8 +15,11 @@ RepS can sort by player name or by match up.
     - `--sort m` means sort the replays by match up
 2. The sorted replays will be in **folder/RepS**
 
+# Known Bugs/Issues
+1. Replays that are not from the latest SC2 patch tend to have issues with [S2 Protocol](https://github.com/Blizzard/s2protocol). We are working on a solution to this.
 
 # FAQ
 1. RepS will create the folders in the given directory and will not modify or move the original copies.
 2. sort by **player name** will result in the same replay appearing in both player's folders.
-2. sort by **player name** is case sensitive, so a player name __NoticALs__ and __noticals__ will have their own folders of replays
+3. sort by **player name** is case sensitive, so a player name __NoticALs__ and __noticals__ will have their own folders of replays.
+4. sort by **matchup up** currently does not work for team game replays such as 2v2 or 3v3.
