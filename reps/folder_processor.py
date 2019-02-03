@@ -59,17 +59,12 @@ class FolderProcessor:
     #in chronological order using the UTC timestamp
     def __sort_chronogolocally(self):
 
-        #for MS Windows, time ticks start Jan 1, 1970
-        tick_start = 116444736000000000
-        nano_seconds = 10000000
-
         #the function to sort each
         by_UTC = lambda rep: rep.UTC_timestamp
 
         for key in self.__folders:
             for replay in self.__folders[key]:
-                d = datetime.datetime.fromtimestamp((replay.UTC_timestamp - tick_start) // nano_seconds)
-                print(d)
+                self.__folders[key].sort(key=by_UTC)
 
     #depth_first_search - recurssively search the folder structure for all replays
     #call the inspector to form and add to necessary buckets after reading a replay
@@ -152,5 +147,5 @@ class FolderProcessor:
         #sort each replay in each folder chronologically
         self.__sort_chronogolocally()
 
-        # #create the necessary subfolders
-        # self.__create_folders()        
+        #create the necessary subfolders
+        self.__create_folders()        
