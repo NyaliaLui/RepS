@@ -3,6 +3,7 @@ from os.path import isdir, join
 from shutil import copy as cp
 from reps.inspector import NameInspector, MatchupInspector
 from replay import Replay, is_replay, copy_replay
+import datetime
 
 #FolderProcessor - a singleton which
 #traverses a directory tree, organizes the replays using inspectors,
@@ -53,6 +54,22 @@ class FolderProcessor:
                 new_name = join(folder, replay.replay_name)
                 rename(old_name, new_name)
                 
+
+    #sort_chronologically - go through each replay in each folder (hash key) and sort the list
+    #in chronological order using the UTC timestamp
+    def __sort_chronogolocally(self):
+
+        #for MS Windows, time ticks start Jan 1, 1970
+        tick_start = 116444736000000000
+        nano_seconds = 10000000
+
+        #the function to sort each
+        by_UTC = lambda rep: rep.UTC_timestamp
+
+        for key in self.__folders:
+            for replay in self.__folders[key]:
+                d = datetime.datetime.fromtimestamp((replay.UTC_timestamp - tick_start) // nano_seconds)
+                print(d)
 
     #depth_first_search - recurssively search the folder structure for all replays
     #call the inspector to form and add to necessary buckets after reading a replay
@@ -132,5 +149,8 @@ class FolderProcessor:
         #perform depth first search for replays
         self.__depth_first_search(folder_path, '')
 
-        #create the necessary subfolders
-        self.__create_folders()        
+        #sort each replay in each folder chronologically
+        self.__sort_chronogolocally()
+
+        # #create the necessary subfolders
+        # self.__create_folders()        
