@@ -27,9 +27,10 @@ class Replay:
     #header - the replay header information
     #protocol - the protocol for this replay
     #details - the list of details in JSON formation for this replay
+    #UTC_timestamp - the replay timestamp in UTC time
 
     def __init__(self, replay_path = ''):
-        self.folder_flag = -1
+        self.series_flag = -1
         self.players = []
         self.archive = None
         self.baseBuild = None
@@ -38,6 +39,7 @@ class Replay:
         self.details = None
         self.local_path = replay_path
         self.replay_name = ''
+        self.UTC_timestamp = 0
 
         if replay_path is not '':
             #generate MPQ archive
@@ -60,6 +62,7 @@ class Replay:
             #replay details
             contents = self.archive.read_file('replay.details')
             self.details = self.protocol.decode_replay_details(contents)
+            self.UTC_timestamp = self.details['m_timeUTC']
 
             #pre process for matchup and names
             num_players = len(self.details['m_playerList'])
@@ -105,7 +108,7 @@ class Replay:
 def copy_replay(replay):
     duplicate = Replay()
 
-    duplicate.folder_flag = replay.folder_flag
+    duplicate.series_flag = replay.series_flag
     duplicate.players = replay.players[:]
     duplicate.archive = deepcopy(replay.archive)
     duplicate.baseBuild = replay.baseBuild
@@ -114,5 +117,6 @@ def copy_replay(replay):
     duplicate.details = deepcopy(replay.details)
     duplicate.local_path = replay.local_path[:]
     duplicate.replay_name = replay.replay_name[:]
+    duplicate.UTC_timestamp = replay.UTC_timestamp
 
     return duplicate
