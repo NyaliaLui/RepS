@@ -12,7 +12,7 @@ class FolderProcessor:
 
     def __init__(self, dest=''):
         self.__folders = {}
-        self.__same_match = {}
+        self.__same_series = {}
         self.__inspector = None
         self.__dest_folder = dest
 
@@ -20,7 +20,6 @@ class FolderProcessor:
     #where each key is the folder name. Then, it copies all replays into 
     #the appropriate locations
     def __create_folders(self):
-
         parent_folder = join(self.__dest_folder, 'Replays')
         #create parent directory is called "RepS"
         try:
@@ -46,26 +45,14 @@ class FolderProcessor:
 
                 #only assign numbers if there are more than one copy of replays
                 #with the same players in a 1v1 match
-                if replay.folder_flag > -1:
+                if replay.series_flag > -1:
                     temp = replay.replay_name.split('.')[0]
-                    temp = temp + (' (%d)' % (replay.folder_flag+1)) + '.SC2Replay'
+                    temp = temp + (' (%d)' % (replay.series_flag+1)) + '.SC2Replay'
                     replay.replay_name = temp
 
                 new_name = join(folder, replay.replay_name)
                 rename(old_name, new_name)
                 
-
-    #sort_chronologically - go through each replay in each folder (hash key) and sort the list
-    #in chronological order using the UTC timestamp
-    def __sort_chronogolocally(self):
-
-        #the function to sort each
-        by_UTC = lambda rep: rep.UTC_timestamp
-
-        for key in self.__folders:
-            for replay in self.__folders[key]:
-                self.__folders[key].sort(key=by_UTC)
-
     #depth_first_search - recurssively search the folder structure for all replays
     #call the inspector to form and add to necessary buckets after reading a replay
     def __depth_first_search(self, start_path, inter_path):
@@ -105,31 +92,53 @@ class FolderProcessor:
 
                 #place replays in proper folders
                 if key in self.__folders.keys():
-
-                    count = self.__same_match[key].count(replay.replay_name)
-                    if count > 0:
-                        replay.folder_flag = count
-                        
-
-                    #if folder flag is 1, then this is the first duplicate replay_name
-                    #and we need to make the first replay flag as 0
-                    if replay.folder_flag == 1:
-                        i = self.__same_match[key].index(replay.replay_name)
-                        self.__folders[key][i].folder_flag = 0
-
                     self.__folders[key].append(replay)
-                    self.__same_match[key].append(replay.replay_name)
 
                 else:
                     self.__folders[key] = []
-                    self.__same_match[key] = []
 
-                    #folder flag -1 means there are no replay with the same player names, yet ...
-                    replay.folder_flag = -1
+                    #series flag -1 means there are no replay with the same player names, yet ...
+                    replay.series_flag = -1
                     self.__folders[key].append(replay)
-                    self.__same_match[key].append(replay.replay_name)
 
 
+    #sort_chronologically - go through each replay in each folder (hash key) and sort the list
+    #in chronological order using the UTC timestamp
+    def __sort_chronogolocally(self):
+
+        #the function to sort each
+        by_UTC = lambda rep: rep.UTC_timestamp
+
+        for key in self.__folders:
+            self.__folders[key].sort(key=by_UTC)
+                
+
+    #mark_series - iterate through each replay in each folder (hash key) and flag
+    #games in the same series
+    def __mark_series(self):
+
+        for key in self.__folders:
+
+            for replay in self.__folders[key]:
+
+                #place replays in proper folders
+                if key in self.__same_series.keys():
+
+                    count = self.__same_series[key].count(replay.replay_name)
+                    if count > 0:
+                        replay.series_flag = count
+
+                    #if series flag is 1, then this is the first duplicate replay_name
+                    #and we need to make the flag for the first replay flag as 0
+                    if replay.series_flag == 1:
+                        i = self.__same_series[key].index(replay.replay_name)
+                        self.__folders[key][i].series_flag = 0
+
+                    self.__same_series[key].append(replay.replay_name)
+
+                else:
+                    self.__same_series[key] = []
+                    self.__same_series[key].append(replay.replay_name)
 
     #organize_replays - conduct a depth first search on the given replay folder
     #and organize the replays.
@@ -147,5 +156,8 @@ class FolderProcessor:
         #sort each replay in each folder chronologically
         self.__sort_chronogolocally()
 
+        #mark replays with series tag if applicable
+        self.__mark_series()
+
         #create the necessary subfolders
-        self.__create_folders()        
+        self.__create_folders()

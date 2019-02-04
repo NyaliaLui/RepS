@@ -30,7 +30,7 @@ class Replay:
     #UTC_timestamp - the replay timestamp in UTC time
 
     def __init__(self, replay_path = ''):
-        self.folder_flag = -1
+        self.series_flag = -1
         self.players = []
         self.archive = None
         self.baseBuild = None
@@ -108,7 +108,7 @@ class Replay:
 def copy_replay(replay):
     duplicate = Replay()
 
-    duplicate.folder_flag = replay.folder_flag
+    duplicate.series_flag = replay.series_flag
     duplicate.players = replay.players[:]
     duplicate.archive = deepcopy(replay.archive)
     duplicate.baseBuild = replay.baseBuild
