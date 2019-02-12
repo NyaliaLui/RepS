@@ -13,6 +13,8 @@ parser.add_argument('-s', '--sort', type=str, choices=['p','m'], required=True, 
 parser.add_argument('-t', '--target', type=str, help='target folder for the replays')
 
 args = parser.parse_args()
+
+#annonce which sort option was chosen
 if args.sort is 'p':
     print("sort by player name enabled")
 
@@ -20,6 +22,7 @@ if args.sort is 'm':
     print("sort by matchup enabled")
 
 try:
+    #put organized replays in target directory if enabled
     fp = (FolderProcessor(args.target) if args.target else FolderProcessor())
     fp.organize_replays(args.folder, args.sort)
 except:
