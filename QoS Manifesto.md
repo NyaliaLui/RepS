@@ -10,6 +10,7 @@ This document describes the core features and attributes which RepS must satisfy
 7. a comment block must be written above every function and class
     - Function's must have comments which describes the constructs purpose, input parameters, and expected return value
     - Classes must have comments which describe the constructs puprose
+    - the `__init__` function is excempt from this rule.
     - See `reps/folder_processor.py` for example
 8. all descriptions in `Docs/` must have a readability consensus of grade 8 or lower
     - We use [Readability Formulas](http://www.readabilityformulas.com/free-readability-formula-tests.php) for this
