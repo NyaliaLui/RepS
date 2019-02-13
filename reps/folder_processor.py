@@ -4,6 +4,7 @@ from shutil import copy as cp
 from reps.inspector import NameInspector, MatchupInspector
 from replay import Replay, is_replay, copy_replay
 import datetime
+import platform
 
 #FolderProcessor
 # @purpose - a singleton which traverses a directory tree, 
@@ -20,6 +21,7 @@ class FolderProcessor:
         self.__same_series = {}
         self.__inspector = None
         self.__dest_folder = dest
+        self.__platform = platform.system()
 
     #create_folders
     # @params - no parameters
@@ -49,7 +51,11 @@ class FolderProcessor:
                 cp(replay.local_path, folder)
 
                 #give the replays a more descriptive name
-                old_name = join(folder, replay.local_path.split('\\')[-1])
+                old_name = ''
+                if self.__platform is 'Windows':
+                    old_name = join(folder, replay.local_path.split('\\')[-1])
+                else:
+                    old_name = join(folder, replay.local_path.split('/')[-1])
 
                 #only assign numbers if there are more than one copy of replays
                 #with the same players in a 1v1 match
