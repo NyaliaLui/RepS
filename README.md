@@ -24,3 +24,4 @@ RepS can sort by player name or by match up.
 1. RepS will create the folders in the given directory and will not modify or move the original copies.
 2. sort by **player name** will result in the same replay appearing in the folders for every player in the game lobby.
 3. sort by **player name** is case sensitive, so a player name __NoticALs__ and __noticals__ will have their own folders of replays.
+4. Currently, running RepS on a collection that was already RepS'd will result in duplicates or undefined behaviour.
