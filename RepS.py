@@ -25,5 +25,5 @@ try:
     #put organized replays in target directory if enabled
     fp = (FolderProcessor(args.target) if args.target else FolderProcessor())
     fp.organize_replays(args.folder, args.sort)
-except:
-    print('something went wrong')
+except Exception as ex:
+    print('Something went wrong: {0}'.format(ex))
