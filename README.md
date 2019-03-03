@@ -10,7 +10,7 @@ RepS can sort by player name or by match up.
 * __Success!__ You have downloaded and installed RepS!
 
 # How to use RepS
-1. Run `python RepS.py <replay folder> --sort {p|m} --target <destination folder>`
+1. Run `python RepS.py <source folder> --sort {p|m} --target <destination folder>`
     - `--sort p` means sort the replays by player name
     - `--sort m` means sort the replays by match up
     - `--target <destination folder>` path to a folder where organized replays will be written to (optional)
@@ -20,8 +20,9 @@ RepS can sort by player name or by match up.
 1. Replays that are not from the latest SC2 patch tend to have issues with [S2 Protocol](https://github.com/Blizzard/s2protocol).
 2. sort by **matchup up** currently does not work for team game replays such as 2v2, 3v3, or 4v4.
 
-# FAQ
+# Notes & Limitations
+1. RepS is gauranteed to work with replays from the most recent SC2 patch.
 1. RepS will create the folders in the given directory and will not modify or move the original copies.
 2. sort by **player name** will result in the same replay appearing in the folders for every player in the game lobby.
 3. sort by **player name** is case sensitive, so a player name __NoticALs__ and __noticals__ will have their own folders of replays.
-4. Currently, running RepS on a collection that was already RepS'd will result in duplicates or undefined behaviour.
+4. sort by **SC2 matchup** currently does not work for team games.
