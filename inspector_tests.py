@@ -20,4 +20,4 @@ class InspectorTestCase(unittest.TestCase):
 
     def test_matchup_inspector(self):
         matchup = self.matchupper.inspect(self.replay)
-        self.assertTrue('Protoss vs Terran' in matchup[0])
+        self.assertTrue('Protoss vs Terran' == matchup[0])

@@ -18,9 +18,9 @@ class ReplayTestCase(unittest.TestCase):
 
     def test_create_player(self):
         player = create_player('noticals', 'Protoss', 'sc2')
-        self.assertTrue(player['name'] is 'noticals')
-        self.assertTrue(player['race'] is 'Protoss')
-        self.assertTrue(player['clan_tag'] is 'sc2')
+        self.assertTrue(player['name'] == 'noticals')
+        self.assertTrue(player['race'] == 'Protoss')
+        self.assertTrue(player['clan_tag'] == 'sc2')
         self.assertTrue(player['team_id'] == 0)
 
     def test_empty_replay(self):
@@ -36,7 +36,7 @@ class ReplayTestCase(unittest.TestCase):
         self.assertTrue(replay.protocol is not None)
         self.assertTrue(isinstance(replay.details, dict))
         self.assertTrue(replay.local_path is self.replay_file)
-        self.assertTrue('.SC2Replay' in replay.replay_name[-10:])
+        self.assertTrue('.SC2Replay' == replay.replay_name[-10:])
         self.assertTrue(replay.UTC_timestamp > 0)
 
     def test_copy_replay(self):
