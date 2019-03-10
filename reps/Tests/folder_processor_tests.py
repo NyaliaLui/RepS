@@ -21,7 +21,7 @@ class FolderProcessorTestCase(unittest.TestCase):
 
         #all 4 sample files must be in the directory
         files = os.listdir(temp_path)
-        self.assertTrue(len(files) == 4)
+        self.assertTrue(len(files) == 5)
 
         #remove the directory for further testing
         rmtree(os.path.join(self.root_path, 'Replays'))
@@ -37,14 +37,22 @@ class FolderProcessorTestCase(unittest.TestCase):
         fs = os.listdir(replays_path)
         temp_path1 = os.path.join(replays_path, fs[0])
         temp_path2 = os.path.join(replays_path, fs[1])
+        temp_path3 = os.path.join(replays_path, fs[2])
+        temp_path4 = os.path.join(replays_path, fs[3])
         self.assertTrue(os.path.isdir(temp_path1))
         self.assertTrue(os.path.isdir(temp_path2))
+        self.assertTrue(os.path.isdir(temp_path3))
+        self.assertTrue(os.path.isdir(temp_path4))
 
         #both plater folders must have all 4 sample replays
         files1 = os.listdir(temp_path1)
         files2 = os.listdir(temp_path2)
-        self.assertTrue(len(files1) == 4)
-        self.assertTrue(len(files2) == 4)
+        files3 = os.listdir(temp_path3)
+        files4 = os.listdir(temp_path4)
+        self.assertTrue(len(files1) == 4 or len(files1) == 1)
+        self.assertTrue(len(files2) == 4 or len(files2) == 1)
+        self.assertTrue(len(files3) == 4 or len(files3) == 1)
+        self.assertTrue(len(files4) == 4 or len(files4) == 1)
 
         #remove the directory for further testing
         rmtree(replays_path)
@@ -88,23 +96,18 @@ class FolderProcessorTestCase(unittest.TestCase):
     def test_collection_with_duplicates(self):
         folder_root = 'HasDuplicates'
         another_fp = FolderProcessor(folder_root)
-        another_fp.organize_replays(folder_root, 'p')
+        another_fp.organize_replays(folder_root, 'm')
 
         replays_path = os.path.join(folder_root, 'Replays')        
         self.assertTrue(os.path.isdir(replays_path))
 
-        #the player folders must be directories
-        fs = os.listdir(replays_path)
-        temp_path1 = os.path.join(replays_path, fs[0])
-        temp_path2 = os.path.join(replays_path, fs[1])
-        self.assertTrue(os.path.isdir(temp_path1))
-        self.assertTrue(os.path.isdir(temp_path2))
+        #the matchup folder must be a directory
+        temp_path = os.path.join(folder_root, 'Replays', 'Protoss vs Terran')        
+        self.assertTrue(os.path.isdir(temp_path))
 
         #both plater folders must have all 7 sample replays
-        files1 = os.listdir(temp_path1)
-        files2 = os.listdir(temp_path2)
-        self.assertTrue(len(files1) == 7)
-        self.assertTrue(len(files2) == 7)
+        files = os.listdir(temp_path)
+        self.assertTrue(len(files) == 7)
 
         #remove the directory for further testing
         rmtree(replays_path)
