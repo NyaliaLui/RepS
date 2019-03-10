@@ -1,6 +1,6 @@
 import unittest
 import os
-from reps import FolderProcessor
+from .. import FolderProcessor
 from shutil import rmtree
 import traceback
 

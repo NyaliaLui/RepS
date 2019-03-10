@@ -1,6 +1,6 @@
 import unittest
-from reps import Replay
-from reps.replay import is_replay, copy_replay, create_player
+from .. import Replay
+from ..replay import is_replay, copy_replay, create_player
 import platform
 import mpyq
 

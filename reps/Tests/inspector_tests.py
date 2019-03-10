@@ -1,6 +1,6 @@
 import unittest
-from reps.inspector import NameInspector, MatchupInspector
-from reps import Replay
+from ..inspector import NameInspector, MatchupInspector
+from .. import Replay
 import platform
 
 class InspectorTestCase(unittest.TestCase):
