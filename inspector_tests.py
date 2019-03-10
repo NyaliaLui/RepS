@@ -1,14 +1,23 @@
 import unittest
 from reps.inspector import NameInspector, MatchupInspector
+from reps import Replay
+import platform
 
 class InspectorTestCase(unittest.TestCase):
     def setUp(self):
+        self.replay = None
+        if platform.system() is 'Windows':
+            self.replay = Replay('SampleReplays\\Sample 1.SC2Replay')
+        else:
+            self.replay = Replay('SampleReplays/Sample 1.SC2Replay')
+
         self.namer = NameInspector()
         self.matchupper = MatchupInspector()
-        print('setup inspector test case')
 
-    def tearDown(self):
-        print('teardown inspector test case')
+    def test_name_inspector(self):
+        names = self.namer.inspect(self.replay)
+        self.assertTrue(names == ['[IxGeu] goblin', ' Clem'])
 
-    def test_isten(self):
-        self.assertTrue(True)
+    def test_matchup_inspector(self):
+        matchup = self.matchupper.inspect(self.replay)
+        self.assertTrue('Protoss vs Terran' in matchup[0])
