@@ -59,3 +59,52 @@ class FolderProcessorTestCase(unittest.TestCase):
 
         #remove the directory for further testing
         rmtree(os.path.join('SampleReplays', 'Replays'))
+
+    def test_exceptions(self):
+        try:
+            self.fp.organize_replays('','m')
+        except Exception as ex:
+            self.assertTrue('folder_path must be defined and non-empty' == str(ex))
+
+        try:
+            self.fp.organize_replays('bling','')
+        except Exception as ex:
+            self.assertTrue('sort_type must be either {p|m}' == str(ex))
+
+    def test_empty_collection(self):
+        folder_root = 'EmptyFolder'
+        os.mkdir(folder_root)
+
+        another_fp = FolderProcessor(folder_root)
+        another_fp.organize_replays(folder_root, 'p')
+
+        temp_path = os.path.join(folder_root, 'Replays')
+        self.assertTrue(os.path.isdir(temp_path))
+        files = os.listdir(temp_path)
+        self.assertTrue(len(files) == 0)
+
+        rmtree(folder_root)
+
+    def test_collection_with_duplicates(self):
+        folder_root = 'HasDuplicates'
+        another_fp = FolderProcessor(folder_root)
+        another_fp.organize_replays(folder_root, 'p')
+
+        replays_path = os.path.join(folder_root, 'Replays')        
+        self.assertTrue(os.path.isdir(replays_path))
+
+        #the player folders must be directories
+        fs = os.listdir(replays_path)
+        temp_path1 = os.path.join(replays_path, fs[0])
+        temp_path2 = os.path.join(replays_path, fs[1])
+        self.assertTrue(os.path.isdir(temp_path1))
+        self.assertTrue(os.path.isdir(temp_path2))
+
+        #both plater folders must have all 7 sample replays
+        files1 = os.listdir(temp_path1)
+        files2 = os.listdir(temp_path2)
+        self.assertTrue(len(files1) == 7)
+        self.assertTrue(len(files2) == 7)
+
+        #remove the directory for further testing
+        rmtree(replays_path)
