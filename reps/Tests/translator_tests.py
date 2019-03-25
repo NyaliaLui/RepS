@@ -1,5 +1,5 @@
 import unittest
-from ..inpsector import RaceTranslator
+from ..inspector import RaceTranslator
 
 class TranslatorTestCase(unittest.TestCase):
     def setUp(self):
