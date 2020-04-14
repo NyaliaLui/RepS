@@ -2,7 +2,7 @@ from os import listdir, chdir, mkdir, rename
 from os.path import isdir, join
 from shutil import copy as cp
 from reps.inspector import NameInspector, MatchupInspector
-from replay import Replay, is_replay, copy_replay
+from .replay import Replay, is_replay, copy_replay
 import datetime
 import platform
 
@@ -55,7 +55,7 @@ class FolderProcessor:
                 if self.__rename_enabled:
                     #give the replays a more descriptive name
                     old_name = ''
-                    if self.__platform is 'Windows':
+                    if self.__platform == 'Windows':
                         old_name = join(folder, replay.local_path.split('\\')[-1])
                     else:
                         old_name = join(folder, replay.local_path.split('/')[-1])
@@ -178,7 +178,7 @@ class FolderProcessor:
     # @purpose - organize all the replays in a given folder of SC2 replays.
     def organize_replays(self, folder_path, sortop, enable_rename=False):
         
-        if (folder_path is None) or (folder_path is ''):
+        if (folder_path is None) or (folder_path == ''):
             raise Exception('folder_path must be defined and non-empty')
         
         if (sortop is None) or (sortop not in ('p', 'm')):
@@ -188,7 +188,7 @@ class FolderProcessor:
             raise Exception('enable_rename must be type bool')
 
         #form the proper inspector
-        if sortop is 'p':
+        if sortop == 'p':
             self.__inspector = NameInspector()
         else:
             self.__inspector = MatchupInspector()

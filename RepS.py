@@ -16,15 +16,13 @@ parser.add_argument('--enable-rename', action='store_true', help='enable replay 
 args = parser.parse_args()
 
 #annonce which sort option was chosen
-if args.sort is 'p':
+if args.sort == 'p':
     print("sort by player name enabled")
 
-if args.sort is 'm':
+if args.sort == 'm':
     print("sort by matchup enabled")
 
-try:
-    #put organized replays in target directory if enabled
-    fp = (FolderProcessor(args.target) if args.target else FolderProcessor())
-    fp.organize_replays(args.folder, args.sort, args.enable_rename)
-except Exception as ex:
-    print('Something went wrong: {0}'.format(ex))
+
+#put organized replays in target directory if enabled
+fp = (FolderProcessor(args.target) if args.target else FolderProcessor())
+fp.organize_replays(args.folder, args.sort, args.enable_rename)
