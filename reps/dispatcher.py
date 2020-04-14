@@ -1,7 +1,7 @@
 from multiprocessing import Queue
-from folder_processor import FolderProcessor
+from .folder_processor import FolderProcessor
 from reps.archiver import ZipArchiver, RARArchiver
-from renamer import FileRenamer
+from .renamer import FileRenamer
 import os
 from shutil import move
 

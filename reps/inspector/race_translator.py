@@ -11,16 +11,30 @@ class RaceTranslator:
         self.__conversion_table['Protoss'] = 'Protoss'
         self.__conversion_table['Terran'] = 'Terran'
         self.__conversion_table['Zerg'] = 'Zerg'
+        self.__conversion_table[b'Protoss'] = 'Protoss'
+        self.__conversion_table[b'Terran'] = 'Terran'
+        self.__conversion_table[b'Zerg'] = 'Zerg'
 
         #chinese
         self.__conversion_table['\xe6\x98\x9f\xe7\x81\xb5'] = 'Protoss'
         self.__conversion_table['\xe4\xba\xba\xe7\xb1\xbb'] = 'Terran'
         self.__conversion_table['\xe5\xbc\x82\xe8\x99\xab'] = 'Zerg'
+        self.__conversion_table[b'\xe6\x98\x9f\xe7\x81\xb5'] = 'Protoss'
+        self.__conversion_table[b'\xe4\xba\xba\xe7\xb1\xbb'] = 'Terran'
+        self.__conversion_table[b'\xe5\xbc\x82\xe8\x99\xab'] = 'Zerg'
 
         #korean
         self.__conversion_table['\xed\x94\x84\xeb\xa1\x9c\xed\x86\xa0\xec\x8a\xa4'] = 'Protoss'
         self.__conversion_table['\xed\x85\x8c\xeb\x9e\x80'] = 'Terran'
         self.__conversion_table['\xec\xa0\x80\xea\xb7\xb8'] = 'Zerg'
+        self.__conversion_table[b'\xed\x94\x84\xeb\xa1\x9c\xed\x86\xa0\xec\x8a\xa4'] = 'Protoss'
+        self.__conversion_table[b'\xed\x85\x8c\xeb\x9e\x80'] = 'Terran'
+        self.__conversion_table[b'\xec\xa0\x80\xea\xb7\xb8'] = 'Zerg'
+
+        #german
+        # Protoss and Zerg in German is still Protoss and Zerg (according to google translate)
+        self.__conversion_table['Terraner'] = 'Terran'
+        self.__conversion_table[b'Terraner'] = 'Terran'
 
 
     #translate

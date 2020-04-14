@@ -2,7 +2,7 @@ from s2protocol import versions
 import mpyq
 import sys
 from os.path import isfile
-from copy import deepcopy
+from copy import copy, deepcopy
 
 #is_replay
 # @params - relative path to the replay file
@@ -67,7 +67,7 @@ class Replay:
             self.baseBuild = self.header['m_version']['m_baseBuild']
             try:
                 self.protocol = versions.build(self.baseBuild)
-            except Exception, e:
+            except Exception as e:
                 print >> sys.stderr, 'Unsupported base build: {0} ({1})'.format(self.baseBuild, str(e))
                 sys.exit(1)
 
@@ -82,7 +82,7 @@ class Replay:
 
                 player = None
 
-                name = self.details['m_playerList'][i]['m_name']
+                name = self.details['m_playerList'][i]['m_name'].decode()
                 race = self.details['m_playerList'][i]['m_race']
                 clan = ''
                 team = self.details['m_playerList'][i]['m_teamId']
@@ -126,7 +126,7 @@ def copy_replay(replay):
 
     duplicate.series_flag = replay.series_flag
     duplicate.players = replay.players[:]
-    duplicate.archive = deepcopy(replay.archive)
+    duplicate.archive = copy(replay.archive)
     duplicate.baseBuild = replay.baseBuild
     duplicate.header = deepcopy(replay.header)
     duplicate.protocol = replay.protocol

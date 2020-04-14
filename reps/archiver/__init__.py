@@ -1,2 +1,2 @@
-from ziper import ZipArchiver
-from rarer import RARArchiver
+from .ziper import ZipArchiver
+from .rarer import RARArchiver

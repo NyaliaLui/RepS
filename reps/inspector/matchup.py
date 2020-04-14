@@ -1,4 +1,4 @@
-from race_translator import RaceTranslator
+from .race_translator import RaceTranslator
 
 #Matchup Inspector
 # @purpose - the inspector which is only concerned with
