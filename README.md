@@ -3,7 +3,7 @@ A python script that searches a folder and its sub-folders for SC2 replays and t
 RepS can sort by player name or by match up.
 
 # Installation steps
-* Must have [Python2](https://www.python.org/downloads/) installed on your system. Download Python2 [here](https://www.python.org/downloads/)
+* Must have [Python](https://www.python.org/downloads/) installed on your system. It was tested with Python2 but also works with Python3. Download Python [here](https://www.python.org/downloads/)
 * This code uses [S2 Protocol](https://github.com/Blizzard/s2protocol) which is a python 2.X library for reading SC2 replays
 * Download RepS via git or click green download button to get as .zip file
 * extract the contents to anywhere on your machine
